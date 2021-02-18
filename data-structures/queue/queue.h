@@ -10,5 +10,6 @@ typedef struct queue {
 NODE* queue_front(QUEUE* queue);
 NODE* queue_back(QUEUE* queue);
 void queue_push(QUEUE* queue, char elem);
+void queue_push_node(QUEUE* queue, NODE* node);
 void queue_pop(QUEUE* queue);
 #endif

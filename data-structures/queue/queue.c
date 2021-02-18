@@ -4,28 +4,27 @@
 
 NODE* queue_front(QUEUE* queue) {
     if (!queue) {
-        printf("Queue is empty. Cannot front.\n");
-        return NULL;
+        printf("Queue should not be null");
+        exit(1);
     }
     return queue->front;
 }
 
 NODE* queue_back(QUEUE* queue) {
     if (!queue) {
-        printf("Queue is empty. Cannot back.\n");
-        return NULL;
+        printf("Queue should not be null");
+        exit(1);
     }
 
-    NODE* node = queue->front;
+    NODE* node = queue_front(queue);
     if (!node) {
         printf("Empty queue.\n");
-        return node;
+        return NULL;
     }
 
     while (node->next) {
         node = node->next;
     }
-
     return node;
 }
 
@@ -34,11 +33,19 @@ void queue_push(QUEUE* queue, char elem) {
     node->value = elem;
     node->next = NULL;
 
-    if(queue->front == NULL) {
+    if(!queue_front(queue)) {
         queue->front = node;
     } else {
         NODE* back = queue_back(queue);
         back->next = node;
+    }
+}
+
+void queue_push_node(QUEUE* queue, NODE* node) {
+    if (!queue_front(queue)) {
+        queue->front = node;
+    } else {
+        queue_back(queue)->next = node;
     }
 }
 

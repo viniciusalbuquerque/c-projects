@@ -5,16 +5,16 @@
 #include "map.h"
 
 MAP map;
-int** visitedMap;
 
-void allocateVisitedMap(MAP* map) {
-    visitedMap = malloc(map->height * sizeof(int*));
+int** allocateVisitedMap(MAP* map) {
+    int** visitedMap = malloc(map->height * sizeof(int*));
     for (int i = 0; i < map->height; i++) {
         visitedMap[i] = calloc(map->width, sizeof(int));
     }
+    return visitedMap;
 }
 
-void deallocateVisitedMap(MAP* map) {
+void deallocateVisitedMap(MAP* map, int** visitedMap) {
     for (int i = 0; i < map->width; i++) {
         free(visitedMap[i]);
     }
@@ -30,7 +30,6 @@ void printQueuePath(MAP* map, QUEUE* queue) {
         path[index++] = queue->front->y + '0';
         path[index++] = '-';
         path[index++] = '>';
-        //printf("%d,%d\n", queue->front->x, queue->front->y);
         if (queue_front(queue)->value == FLOOR) {
             map->matrix[queue->front->x][queue->front->y] = 'x';
         }
@@ -146,7 +145,7 @@ int dfs(MAP* map, int** visitedMap, STACK* stack, int currX, int currY) {
 }
 
 void findPath(MAP* map) {
-    allocateVisitedMap(map);
+    int** visitedMap = allocateVisitedMap(map);
     int initX, initY;
     findStart(map, &initX, &initY);
     printf("initial: (%d,%d)\n", initX, initY);
@@ -166,7 +165,7 @@ void findPath(MAP* map) {
         printf("Could not find a way stack\n");
     }
 */
-    deallocateVisitedMap(map);
+    deallocateVisitedMap(map, visitedMap);
 }
 
 int main(int argc, char* argv[]) {
